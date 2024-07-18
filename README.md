@@ -1,73 +1,57 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## User Management Microservices Project
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### About the Project
+This project implements a microservices architecture for user management, consisting of three services:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+1. **API Gateway (api-gateway, running on port 3000)**
+2. **User Management (user-management, running on port 3001)**
+3. **Block User (block-user, running on port 3002)**
 
-## Description
+The services share a centrally configured PostgreSQL database and Redis for caching.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+#### API Gateway
+- The `api-gateway` service acts as a client to the other services. It handles HTTP requests, performs authentication, and extracts the user ID, which is then used by the other services.
 
-## Installation
+#### User Management
+- The `user-management` service provides CRUD (Create, Read, Update, Delete) operations for user management. It interacts with the database and the Redis cache to manage user data.
 
-```bash
-$ npm install
-```
+#### Block User
+- The `block-user` service is responsible for blocking and unblocking users.
 
-## Running the app
+All API endpoints are secured except for creating a new user and fetching all users.
 
-```bash
-# development
-$ npm run start
+For detailed API documentation, refer to [API Documentation](https://documenter.getpostman.com/view/4972638/2sA3kRHiCP).
 
-# watch mode
-$ npm run start:dev
+### Prerequisites
+Before running the project, ensure you have the following software installed and running:
 
-# production mode
-$ npm run start:prod
-```
+- Node.js (v14 or higher)
+- PostgreSQL
+- Redis
 
-## Test
+### Getting Started
+
+1. **Clone the repository**:
+   ```
+   git clone https://github.com/cp-coder1269/user-management-microservices.git
+   ```
+
+2. **Install dependencies**:
+   ```
+   cd user-management-microservices
+   npm install
+   ```
+
+### Running the Project
+To start all three services together using the concurrency module of Node.js, run the following command in the root directory of the project:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
 
-## Support
+This command will concurrently start the `api-gateway`, `user-management`, and `block-user` services.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
-
-Nest is [MIT licensed](LICENSE).
+For any issues or further assistance, email `cppal474@gmail.com`.
