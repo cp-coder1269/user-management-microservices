@@ -15,13 +15,13 @@ export class BlockUserService {
   async block(userId: number, createBlockUserDto: CreateBlockUserDto) {
     const pattern = { cmd: BLOCK_USER };
     const payload = { userId, createBlockUserDto };
-    return this.blockUserClient.send(pattern, payload).toPromise();
+    return await this.blockUserClient.send(pattern, payload).toPromise();
   }
 
   async unblock(userId: number, createBlockUserDto: CreateBlockUserDto) {
     const pattern = { cmd: UNBLOCK_USER };
     const payload = { userId, createBlockUserDto };
-    return this.blockUserClient.send(pattern, payload).toPromise();
+    return await this.blockUserClient.send(pattern, payload).toPromise();
   }
 
   async findAll(
@@ -29,6 +29,6 @@ export class BlockUserService {
   ) {
     const pattern = { cmd: GET_BLOCKED_USERS };
     const payload = { userId };
-    return this.blockUserClient.send(pattern, payload).toPromise();
+    return await this.blockUserClient.send(pattern, payload).toPromise();
   }
 }

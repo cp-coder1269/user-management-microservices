@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common-config/tsconfig.lib.json"
       }
+    },
+    "block-user": {
+      "type": "application",
+      "root": "apps/block-user",
+      "entryFile": "main",
+      "sourceRoot": "apps/block-user/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/block-user/tsconfig.app.json"
+      }
     }
   }
 }
