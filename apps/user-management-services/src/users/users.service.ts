@@ -2,16 +2,18 @@ import { CreateUserDto } from "@app/common-config/dtos/create-user.dto";
 import { SearchUserDto } from "@app/common-config/dtos/search-user.dto";
 import { UpdateUserDto } from "@app/common-config/dtos/update-user.dto";
 import { User } from "@app/common-config/entities/user.entity";
-import { Injectable,  HttpException } from "@nestjs/common";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Injectable,  HttpException, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    // @Inject(CACHE_MANAGER) private cacheService: Cache,
+    @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {}
 
   async searchUsers(userId:number, searchUserDto: SearchUserDto): Promise<User[]> {
@@ -82,18 +84,17 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<User> {  
-    // const cachedData = await this.cacheService.get<User>(id.toString());
-    // if (cachedData) {
-    //   return cachedData;
-    // }
+    const cachedData = await this.cacheService.get<User>(id.toString());
+    if (cachedData) {
+      return cachedData;
+    }
     
-
     console.log('without cache:', id);
     const userData = await this.userRepository.findOneBy({ id }); 
     if (!userData) {
       throw new HttpException('User Not Found', 404);
     }
-    // await this.cacheService.set(id.toString(), userData);
+    await this.cacheService.set(id.toString(), userData);
 
     return userData;
   }
@@ -114,16 +115,16 @@ export class UsersService {
       }
     });
     await this.userRepository.save(userToUpdate);
-    // await this.cacheService.del(id.toString());
-    // await this.cacheService.del(userToUpdate.username);
+    await this.cacheService.del(id.toString());
+    await this.cacheService.del(userToUpdate.username);
 
     return userToUpdate;
   }
   
   async remove(id: number): Promise<User> {
     const existingUser = await this.findOne(id);
-    // await this.cacheService.del(id.toString());
-    // await this.cacheService.del(existingUser.username);
+    await this.cacheService.del(id.toString());
+    await this.cacheService.del(existingUser.username);
     return await this.userRepository.remove(existingUser);
   }
 }
